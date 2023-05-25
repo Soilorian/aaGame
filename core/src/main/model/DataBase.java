@@ -1,19 +1,60 @@
 package main.model;
 
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import main.util.PlayerAdapter;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Random;
 
 public class DataBase {
+    private static final HashMap<String, Texture> pictures = new HashMap<>();
     private static final ArrayList<Player> players = new ArrayList<>();
-    private static final Texture background = new Texture("pictures\\aaBackground.jpg");
-    private static Sound fireSound;
-    private static Music music;
+    private static Gson gson = null;
+
+    public static void load() {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Player.class, new PlayerAdapter());
+        builder.setPrettyPrinting();
+        gson = builder.create();
+        for (int i = 1; i <= 8; i++)
+            addProfileIcon("profilepictures/profile" + i + ".jpeg");
+        loadPlayers();
+    }
 
 
-    public static Player getPlayerById(String id){
+    public static void loadPlayers() {
+        File file = new File("Data/Users.json");
+        try {
+            FileReader reader = new FileReader(file);
+            Player[] players1 = gson.fromJson(reader, Player[].class);
+            players.addAll(Arrays.asList(players1));
+            reader.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void savePlayers() {
+        File file = new File("Data/Users.json");
+        try {
+            file.getParentFile().mkdirs();
+            FileWriter writer = new FileWriter(file);
+            gson.toJson(players, writer);
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Player getPlayerById(String id) {
         for (Player player : players) {
             if (player.getUsername().equals(id))
                 return player;
@@ -21,27 +62,30 @@ public class DataBase {
         return null;
     }
 
-    public static boolean addPlayer(Player player){
+    public static boolean addPlayer(Player player) {
         return players.add(player);
     }
 
-    public static Sound getFireSound() {
-        return fireSound;
+    public static void addProfileIcon(String address) {
+        pictures.put(address, new Texture(address));
     }
 
-    public static void setFireSound(Sound fireSound) {
-        DataBase.fireSound = fireSound;
+    public static String getAddressFromTexture(Texture profileIcon) {
+        for (String s : pictures.keySet()) {
+            if (profileIcon.equals(pictures.get(s)))
+                return s;
+        }
+        return null;
     }
 
-    public static Music getMusic() {
-        return music;
+    public static Texture getTextureFromAddress(String address) {
+        if (pictures.containsKey(address)) return pictures.get(address);
+        else return new Texture(address);
     }
 
-    public static void setMusic(Music music) {
-        DataBase.music = music;
-    }
-
-    public static Texture getBackground() {
-        return background;
+    public static Texture getRandomTexture() {
+        Random random = new Random();
+        String s = (String) pictures.keySet().toArray()[random.nextInt(pictures.size() - 1)];
+        return pictures.get(s);
     }
 }

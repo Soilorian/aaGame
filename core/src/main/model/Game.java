@@ -1,73 +1,96 @@
 package main.model;
 
-import com.badlogic.gdx.graphics.Color;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
+import main.util.enums.Difficulty;
 import main.util.enums.GameMap;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game {
-    private boolean blackAndWhite = false;
+    private final Difficulty difficulty;
+    ShapeRenderer shapeRenderer;
+    private int freezeBar = 0;
+    private boolean stage1, stage2, stage3;
     private Vector2 cannonVector2;
     private Texture cannonImage;
     private Sprite sprite;
     private GameMap gameMap;
-    private Circle targetBall;
-    private Circle targetBall2;
-    private Rectangle targetRectangle;
-    ShapeRenderer shapeRenderer;
-    private ArrayList<Circle> firedBalls;
+    private ArrayList<TargetObject> targetObjects;
+
     private ArrayList<Circle> ammo;
-    public Game(GameMap gameMap){
-//        cannonVector2 = new Vector2((float) Gdx.graphics.getWidth() /2, 0);
-//        sprite.setScale(4);
+    private ArrayList<Circle> ammo2;
+    private Random random;
+
+    public Game(GameMap gameMap, int initialBall, Difficulty difficulty) {
+        this.difficulty = difficulty;
+        cannonVector2 = new Vector2((float) Gdx.graphics.getWidth() / 2, 0);
+        sprite.setScale(4);
         switch (gameMap) {
-            case NORMAL:{
-                targetBall = new Circle(336, 900, 20);
+            case NORMAL: {
+                targetObjects.add(new TargetObject(new Circle(336, 900, 70)));
+            }
+            case DUAL_BALL: {
+                targetObjects.add(new TargetObject(new Circle(468, 900, 50)));
+                targetObjects.add(new TargetObject(new Circle(804, 900, 50)));
                 break;
             }
-            case DUAL_BALL:{
-                targetBall = new Circle(168, 900, 15);
-                targetBall2 = new Circle(504, 900, 15);
-                break;
-            }
-            case RECTANGLE:{
-                targetRectangle = new Rectangle();
-                targetRectangle.setX(336);
-                targetRectangle.setY(900);
-                targetRectangle.setWidth(30);
-                targetRectangle.setHeight(20);
-                break;
+            case TRIPLE_PLAY: {
+                targetObjects.add(new TargetObject(new Circle(534, 600, 40)));
+                targetObjects.add(new TargetObject(new Circle(651, 900, 30)));
+                targetObjects.add(new TargetObject(new Circle(738, 600, 40)));
             }
         }
     }
 
-    public void draw(SpriteBatch batch){
-        shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(targetRectangle.x, targetRectangle.y, targetBall.radius);
-        shapeRenderer.end();
+    public boolean update() {
+        for (TargetObject targetObject : targetObjects) {
+            float radius = 5;
+            final float[] add = new float[1];
+            add[0] = 0;
+            if (stage1){
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        difficulty.reverse();
+                        add[0] = random.nextInt(1000);
+                    }
+                }, 4 + random.nextFloat() + random.nextInt(5));
+                radius += add[0];
+            }
+            if (stage2)
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        for (TargetObject object : targetObjects) {
+                            object.reverseVisibility();
+                        }
+                    }
+                }, 1);
+
+            if (stage3)
+                ;
+            Timer timer = new Timer();
+
+
+            if (targetObject.rotate(difficulty.getSpeed(), (bringToRange(radius) - 5)/100))
+                return true;
+        }
+        for (int i = 0; i < targetObjects.size(); i++) for (int j = i + 1; j < targetObjects.size(); j++)
+                if (targetObjects.get(i).checkCollision(targetObjects.get(j))) return true;
+        return false;
     }
 
-    public Sprite getSprite() {
-        return sprite;
-    }
-
-    public Circle getTargetBall() {
-        return targetBall;
-    }
-
-    public Circle getTargetBall2() {
-        return targetBall2;
-    }
-
-    public Rectangle getTargetRectangle() {
-        return targetRectangle;
+    private float bringToRange(float radius) {
+        while (radius > 10)
+            radius /= 10;
+        return radius;
     }
 }

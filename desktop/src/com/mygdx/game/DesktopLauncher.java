@@ -9,7 +9,7 @@ import main.Main;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode(672, 1200);
+		config.setWindowedMode(972, 1200);
 		config.setForegroundFPS(60);
 		config.setTitle("aaGame");
 		config.setResizable(false);

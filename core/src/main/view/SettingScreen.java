@@ -1,13 +1,14 @@
 package main.view;
 
 import com.badlogic.gdx.Screen;
+import main.Main;
 import main.control.Controller;
 
 public class SettingScreen implements Screen {
     private final Controller controller;
 
-    public SettingScreen(Controller controller) {
-        this.controller = controller;
+    public SettingScreen() {
+        this.controller = Main.controller;
     }
 
     @Override

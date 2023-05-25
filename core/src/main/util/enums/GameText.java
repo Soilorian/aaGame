@@ -8,7 +8,14 @@ public enum GameText {
     START_GAME("start a new game", "بازی جدید شروع کنید"),
 
 
-    ;
+    SAVE("save this game", "این بازی را ذخیره کن"),
+    SETTINGS("setting", "تنظیمات"),
+    NO_SAVED_GAME("you have no saved game", "بازی ذخیره شده ای ندارید"),
+    USERNAME("username", "نام کاربری"),
+    PASSWORD("password", "رمز عبور"),
+    LOGIN("login", "ورود"),
+    LOAD("load game", "ادامه ی بازی قبلی"),
+    GUEST_LOGIN("login as guest", "به عنوان مهمان وارد شوید");
 
     private final String english;
     private final String persian;
@@ -16,8 +23,8 @@ public enum GameText {
         this.english = english;
         this.persian = persian;
     }
-
-    public String getMessage(){
+    @Override
+    public String toString(){
         if (Controller.isPersian) return persian;
         return english;
     }

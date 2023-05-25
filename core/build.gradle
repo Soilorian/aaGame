@@ -1,4 +1,10 @@
 sourceCompatibility = 1.7
+dependencies {
+    implementation 'top.jfunc.json:Json-Gson:1.0'
+    implementation 'top.jfunc.json:Json-Gson:1.0'
+    implementation 'top.jfunc.json:Json-Gson:1.0'
+    implementation 'com.google.code.gson:gson:2.10.1'
+}
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]

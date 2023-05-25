@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import main.control.Controller;
 
 public class Main extends ApplicationAdapter {
-    private Controller controller;
+    public static Controller controller;
 
     @Override
     public void create () {
