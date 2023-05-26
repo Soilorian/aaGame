@@ -1,13 +1,18 @@
 package main.model;
 
 import com.badlogic.gdx.graphics.Texture;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class Player {
     private Texture profileIcon;
     private String profileIconAddress;
     private String username;
     private String password;
     private int maxScore;
+
     public Player( String username, String password, Texture profileIcon) {
         this.profileIcon = profileIcon;
         this.username = username;

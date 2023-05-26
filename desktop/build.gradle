@@ -46,6 +46,7 @@ dependencies {
     implementation 'top.jfunc.json:Json-Gson:1.0'
     implementation 'top.jfunc.json:Json-Gson:1.0'
     implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'name.remal.gradle-plugins.lombok:lombok:2.0.2'
 }
 
 

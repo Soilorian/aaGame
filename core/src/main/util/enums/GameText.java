@@ -15,7 +15,10 @@ public enum GameText {
     PASSWORD("password", "رمز عبور"),
     LOGIN("login", "ورود"),
     LOAD("load game", "ادامه ی بازی قبلی"),
-    GUEST_LOGIN("login as guest", "به عنوان مهمان وارد شوید");
+    GUEST_LOGIN("login as guest", "به عنوان مهمان وارد شوید"),
+    PLAY("play", "بازی کن"),
+    DELETE("delete profile", "حذف حساب"),
+    LOGOUT("logout", "خروج");
 
     private final String english;
     private final String persian;

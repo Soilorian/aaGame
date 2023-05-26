@@ -22,6 +22,7 @@ public class Controller extends Game {
     public Sound fireSound;
     public Music music;
     public static Player currentPlayer;
+    public static main.model.Game currentGame;
     public main.model.Game lastSaved;
     public Settings settings;
     public AssetManager manager;
@@ -29,8 +30,10 @@ public class Controller extends Game {
     private final String cannonA = "pictures/cannon.jpg";
     private final String blastA = "sounds/cannonBlast.mp3";
     private final String musicA = "musics/Clown.mp3";
+    private final String musicA2 = "musics/ezio.mp3";
     private final String skinA = "buttons/glassy/skin/glassy-ui.json";
     private final String grayscaleSkinA = "buttons/glassy-grayscale/skin/glassy-ui.json";
+    private final String settingIconA = "pictures/setting.jpg";
 
     public void create() {
         batch = new SpriteBatch();
@@ -44,8 +47,10 @@ public class Controller extends Game {
     private void manageAssets() {
         manager.load(backgroundA, Texture.class);
         manager.load(cannonA, Texture.class);
+        manager.load(settingIconA, Texture.class);
         manager.load(blastA, Sound.class);
         manager.load(musicA, Music.class);
+        manager.load(musicA2, Music.class);
         manager.load(skinA, Skin.class);
         manager.load(grayscaleSkinA, Skin.class);
         DataBase.load();
@@ -103,5 +108,15 @@ public class Controller extends Game {
 
     public Texture getBackground() {
         return manager.get(backgroundA);
+    }
+
+    public Texture getSettingIcon() {
+        return manager.get(settingIconA);
+    }
+
+    public Music getMusicTheme(){
+        if (screen instanceof GameMenu)
+            return manager.get(musicA);
+        return manager.get(musicA2);
     }
 }

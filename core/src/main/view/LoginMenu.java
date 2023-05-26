@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.CharArray;
 import main.control.Controller;
 import main.control.EntranceController;
 import main.model.DataBase;
@@ -20,15 +21,22 @@ import static com.badlogic.gdx.Gdx.graphics;
 
 public class LoginMenu extends Menu {
     TextButton registerButton, loginButton, guestButton;
-    Label errorLabel;
-    private final Table table;
+    Label errorLabel, usernameLabel, passwordLabel;
+    private final Table table, mainTable;
     private final TextField username;
     private final TextField password;
 
     public LoginMenu(final Controller controller) {
         super(controller);
+        mainTable = new Table(controller.getSkin());
+        mainTable.setFillParent(true);
+
         table = new Table(controller.getSkin());
-        table.setBounds(0, 0, graphics.getWidth(), graphics.getHeight());
+        table.setBounds(0, 0, 280, 1200);
+        usernameLabel = new Label("username:", controller.getSkin());
+        usernameLabel.setColor(Color.BLACK);
+        passwordLabel = new Label("password:", controller.getSkin());
+        passwordLabel.setColor(Color.BLACK);
         username = new TextField("", controller.getSkin());
         password = new TextField("", controller.getSkin());
         password.setPasswordMode(true);
@@ -62,18 +70,26 @@ public class LoginMenu extends Menu {
         });
         errorLabel = new Label("", controller.getSkin());
         errorLabel.setColor(Color.RED);
+        errorLabel.setWrap(true);
 
-        table.add(username);
-        table.add(password);
+        stage.clear();
+        table.add(usernameLabel);
+        table.add(username).width(130);
         table.row();
-        table.add(loginButton).width(100);
-        table.add(registerButton).width(100);
+        table.add(passwordLabel);
+        table.add(password).width(130);
         table.row();
-        table.add(guestButton).width(150).colspan(2);
+        table.add(loginButton).colspan(2);
         table.row();
-        table.add(errorLabel).colspan(2);
-        table.setBackground(new TextureRegionDrawable(controller.getBackground()));
-        stage.addActor(table);
+        table.add(registerButton).colspan(2);
+        table.row();
+        table.add(guestButton).colspan(2);
+        table.row();
+        table.add(errorLabel).width(300).colspan(2);
+        mainTable.setBackground(new TextureRegionDrawable(controller.getBackground()));
+        mainTable.add(table);
+        mainTable.left();
+        stage.addActor(mainTable);
     }
 
     private void guestLogin() {

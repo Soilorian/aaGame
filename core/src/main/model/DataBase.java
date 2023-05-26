@@ -1,10 +1,13 @@
 package main.model;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import main.control.Controller;
 import main.util.PlayerAdapter;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -25,7 +28,7 @@ public class DataBase {
         builder.setPrettyPrinting();
         gson = builder.create();
         for (int i = 1; i <= 8; i++)
-            addProfileIcon("profilepictures/profile" + i + ".jpeg");
+            addProfileIcon("profilepictures/profile" + i + ".jpg");
         loadPlayers();
     }
 
@@ -87,5 +90,14 @@ public class DataBase {
         Random random = new Random();
         String s = (String) pictures.keySet().toArray()[random.nextInt(pictures.size() - 1)];
         return pictures.get(s);
+    }
+
+    public static void removeCurrentUser() {
+        if (!Controller.currentPlayer.getUsername().equals("_GUEST_"))
+            players.remove(Controller.currentPlayer);
+    }
+
+    public static Game getSavedGame() {
+        return null;
     }
 }
