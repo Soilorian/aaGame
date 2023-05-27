@@ -18,16 +18,30 @@ public enum GameText {
     GUEST_LOGIN("login as guest", "به عنوان مهمان وارد شوید"),
     PLAY("play", "بازی کن"),
     DELETE("delete profile", "حذف حساب"),
-    LOGOUT("logout", "خروج");
+    LOGOUT("logout", "خروج"),
+    CHANGE("change", "تغییر"),
+    MUTE("mute", "بی صدا"),
+    GRAYSCALE("grayscale", "بی رنگ"),
+    BACK("back", "بازگشت"),
+    P1FIRE("first player shoot", "پرتاب بازیکن اول"),
+    DIFFICULTY("difficulty", "سختی"),
+    MAP("map", "نقشه"), P2FIRE("second player shoot", ""),
+    P1LEFT("first player left", ""),
+    P2LEFT("second player left", ""),
+    P1RIGHT("first player right", ""),
+    P2RIGHT("second player right", ""),
+    FREEZE_BUTTON("freeze", "");
 
     private final String english;
     private final String persian;
+
     GameText(String english, String persian) {
         this.english = english;
         this.persian = persian;
     }
+
     @Override
-    public String toString(){
+    public String toString() {
         if (Controller.isPersian) return persian;
         return english;
     }

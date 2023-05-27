@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import main.control.Controller;
@@ -18,9 +21,9 @@ import main.util.enums.Messages;
 public class MainMenu extends Menu {
     private final TextButton loadSavedGame, play, deleteAccount, logout;
     private final ImageButton profile, setting;
-    Label errorLabel;
     private final Table table, mainTable;
     private final Camera camera;
+    Label errorLabel;
 
     public MainMenu(Controller controller) {
         //start
@@ -90,10 +93,6 @@ public class MainMenu extends Menu {
         });
 
 
-
-
-
-
         //end
         stage.clear();
         table.add(profile).width(300);
@@ -107,17 +106,16 @@ public class MainMenu extends Menu {
         table.add(deleteAccount).width(300).padTop(50).padBottom(50);
         table.row();
         table.add(setting);
-        table.add(errorLabel).width(300).colspan(2);
+        table.row();
+        table.add(errorLabel).width(300);
         mainTable.setBackground(new TextureRegionDrawable(controller.getBackground()));
         mainTable.add(table);
         mainTable.left();
         stage.addActor(mainTable);
-        Gdx.input.setInputProcessor(stage);
-        ((OrthographicCamera) camera).setToOrtho(false, 972, 1200);
     }
 
     private void settingMenu() {
-        controller.setScreen(new SettingMenu());
+        controller.setScreen(new SettingMenu(controller));
     }
 
     private void profileMenu() {
@@ -128,12 +126,16 @@ public class MainMenu extends Menu {
     }
 
     private void logoff() {
-        controller.setScreen(new MainMenu(controller));
+        controller.setScreen(new LoginMenu(controller));
     }
 
     private void deleteProfile() {
-        DataBase.removeCurrentUser();
-        logoff();
+        if (Controller.currentPlayer.getUsername().equals("_GUEST_"))
+            errorLabel.setText(Messages.LOGIN_FIRST.toString());
+        else {
+            DataBase.removeCurrentUser();
+            logoff();
+        }
     }
 
     private void startNewGame() {

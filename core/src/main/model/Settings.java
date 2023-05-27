@@ -3,6 +3,8 @@ package main.model;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.google.gson.Gson;
+import lombok.Getter;
+import lombok.Setter;
 import main.util.enums.Difficulty;
 import main.util.enums.GameMap;
 
@@ -10,8 +12,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
+@Setter
+@Getter
 public class Settings {
-    private final int MAX_BALL_COUNT = 50, MIN_BALL_COUNT = 5;
+    public static final int MAX_BALL_COUNT = 50, MIN_BALL_COUNT = 5;
     private Difficulty difficulty = Difficulty.MEDIUM;
     private GameMap map = GameMap.NORMAL;
     private int initialBallCount = 15;
@@ -22,6 +27,8 @@ public class Settings {
     private int fireSP = Input.Keys.ENTER;
     private int moveLeftSP = Input.Keys.A;
     private int moveRightSP = Input.Keys.D;
+    private int freeze = Input.Keys.TAB;
+    private boolean mute, grayscale;
 
     public Difficulty getDifficulty() {
         return difficulty;
@@ -102,4 +109,10 @@ public class Settings {
     public void setMoveRightSP(int moveRightSP) {
         this.moveRightSP = moveRightSP;
     }
+
+    public int getFreeze() {
+        return freeze;
+    }
 }
+
+

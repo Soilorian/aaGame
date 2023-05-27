@@ -41,6 +41,8 @@ public class Controller extends Game {
         settings = new Settings();
         manager = new AssetManager();
         manageAssets();
+//        music = manager.get(musicA2);
+//        music.play();
         this.setScreen(new LoginMenu(this));
     }
 
@@ -65,10 +67,6 @@ public class Controller extends Game {
         DataBase.savePlayers();
         batch.dispose();
         font.dispose();
-    }
-
-    public void changeScreen(Screen screen){
-        setScreen(screen);
     }
 
     public boolean loadLastGame() {

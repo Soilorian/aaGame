@@ -20,6 +20,12 @@ public class Player {
         profileIconAddress = DataBase.getAddressFromTexture(profileIcon);
     }
 
+    public Player( String username, String password,String profileIconAddress) {
+        this.profileIconAddress = profileIconAddress;
+        this.username = username;
+        this.password = password;
+    }
+
     public String getUsername() {
         return username;
     }
