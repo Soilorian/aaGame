@@ -3,7 +3,6 @@ package main.view;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -50,14 +49,17 @@ public class SettingMenu extends Menu {
         //body
         selectP1Shoot = new TextButton(GameText.CHANGE.toString(), controller.getSkin(), "small");
         labelP1Shoot = new Label(GameText.P1FIRE.toString(), controller.getSkin());
+        labelP1Shoot.setWrap(true);
         addListeners(selectP1Shoot, 0);
 
         selectP2Shoot = new TextButton(GameText.CHANGE.toString(), controller.getSkin(), "small");
         labelP2Shoot = new Label(GameText.P2FIRE.toString(), controller.getSkin());
+        labelP2Shoot.setWrap(true);
         addListeners(selectP2Shoot, 1);
 
         selectP1Right = new TextButton(GameText.CHANGE.toString(), controller.getSkin(), "small");
         labelP1Right = new Label(GameText.P1RIGHT.toString(), controller.getSkin());
+        labelP1Right.setWrap(true);
         addListeners(selectP1Right, 2);
 
         selectP2Right = new TextButton(GameText.CHANGE.toString(), controller.getSkin(), "small");
@@ -67,14 +69,17 @@ public class SettingMenu extends Menu {
 
         selectP1Left = new TextButton(GameText.CHANGE.toString(), controller.getSkin(), "small");
         labelP1Left = new Label(GameText.P1LEFT.toString(), controller.getSkin());
+        labelP1Left.setWrap(true);
         addListeners(selectP1Left, 4);
 
         selectP2Left = new TextButton(GameText.CHANGE.toString(), controller.getSkin(), "small");
         labelP2Left = new Label(GameText.P2LEFT.toString(), controller.getSkin());
+        labelP2Left.setWrap(true);
         addListeners(selectP2Left, 5);
 
         selectFreeze = new TextButton(GameText.CHANGE.toString(), controller.getSkin(), "small");
         labelFreeze = new Label(GameText.FREEZE_BUTTON.toString(), controller.getSkin());
+        labelFreeze.setWrap(true);
         addListeners(selectFreeze, 6);
 
         back = new TextButton(GameText.BACK.toString(), controller.getSkin(), "small");
@@ -82,7 +87,7 @@ public class SettingMenu extends Menu {
         back.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                controller.setScreen( new MainMenu(controller));
+                back();
             }
         });
 
@@ -121,43 +126,62 @@ public class SettingMenu extends Menu {
 
         //end
         stage.clear();
-        table.add(difficultyLabel).padTop(10).padBottom(10).width(100);
-        table.add(difficultySelectBox).padTop(10).padBottom(10).width(200);
+        table.add(difficultyLabel).pad(10).width(120);
+        table.add(difficultySelectBox).padTop(10).padBottom(10);
         table.row();
-        table.add(mapLabel).padTop(10).padBottom(10);
+        table.add(mapLabel).pad(10).width(120);
         table.add(mapSelectBox).padTop(10).padBottom(10);
         table.row();
-        table.add(mute).padTop(10).padBottom(10);
+        table.add(mute).pad(10).width(120);
         table.add(grayScale).padTop(10).padBottom(10);
         table.row();
-        table.add(labelP1Shoot).padTop(10).padBottom(10);
+        table.add(labelP1Shoot).pad(10).width(120);
         table.add( selectP1Shoot).padTop(10).padBottom(10);
         table.row();
-        table.add(labelP1Left).padTop(10).padBottom(10);
+        table.add(labelP1Left).pad(10).width(120);
         table.add( selectP1Left).padTop(10).padBottom(10);
         table.row();
-        table.add(labelP1Right).padTop(10).padBottom(10);
+        table.add(labelP1Right).pad(10).width(120);
         table.add( selectP1Right).padTop(10).padBottom(10);
         table.row();
-        table.add(labelP2Shoot).padTop(10).padBottom(10);
+        table.add(labelP2Shoot).pad(10).width(120);
         table.add( selectP2Shoot).padTop(10).padBottom(10);
         table.row();
-        table.add(labelP2Left).padTop(10).padBottom(10);
+        table.add(labelP2Left).pad(10).width(120);
         table.add( selectP2Left).padTop(10).padBottom(10);
         table.row();
-        table.add(labelP2Right).width(100);
+        table.add(labelP2Right).pad(10).width(120);
         table.add( selectP2Right).padTop(10).padBottom(10);
         table.row();
-        table.add(labelFreeze, selectFreeze).padTop(10).padBottom(10);
+        table.add(labelFreeze).pad(10).width(120);
+        table.add( selectFreeze).padTop(10).padBottom(10);
         table.row();
-        table.add(back).colspan(2).padTop(10).padBottom(10);
+        table.add(ballCountLabel).pad(10).width(120);
+        table.add(ballCountSlider).padTop(10).padBottom(10);
+        table.row();
+        table.add(back).colspan(2).pad(10);
         table.row();
         table.add(errorLabel).colspan(2);
-        table.setDebug(true);
         mainTable.setBackground(new TextureRegionDrawable(controller.getBackground()));
         mainTable.add(table);
         mainTable.left();
         stage.addActor(mainTable);
+    }
+
+    private void back() {
+        controller.settings.setGrayScale(grayScale.isChecked());
+        controller.settings.setMute(mute.isChecked());
+        controller.settings.setInitialBallCount((int) ballCountSlider.getValue());
+        controller.settings.setDifficulty(difficultySelectBox.getSelected());
+        controller.settings.setMap(mapSelectBox.getSelected());
+        controller.settings.setFreeze(keyFreeze);
+        controller.settings.setFireFP(keyP1Shoot);
+        controller.settings.setFireSP(keyP2Shoot);
+        controller.settings.setMoveLeftFP(keyP1Left);
+        controller.settings.setMoveLeftSP(keyP2Left);
+        controller.settings.setMoveRightFP(keyP1Right);
+        controller.settings.setMoveRightSP(keyP2Right);
+        controller.setScreen(new MainMenu(controller));
     }
 
     private void addListeners(TextButton selectP1Right, final int pid) {

@@ -26,10 +26,6 @@ public class EntranceController extends Controller{
         return Messages.SUCCESSFUL;
     }
 
-    private static boolean isNotValid(String s) {
-        return !s.matches("^\\w{8,}$");
-    }
-
     public static void guestLogin() {
         Controller.setCurrentPlayer(DataBase.getPlayerById("_GUEST_"));
     }

@@ -2,11 +2,8 @@
   {
     "name": "_GUEST_",
     "password": "_GUEST_",
-    "profile": "profilepictures/profile1.jpg"
-  },
-  {
-    "name": "Mahdiasdf",
-    "password": "Mahdiasdf",
-    "profile": "profilepictures/profile6.jpg"
+    "profile": "profilepictures/profile1.jpg",
+    "maxScore": 0,
+    "time": 0
   }
 ]

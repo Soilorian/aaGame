@@ -1,5 +1,7 @@
 package main.model;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.google.gson.Gson;
@@ -12,10 +14,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 public class DataBase {
     private static final HashMap<String, Texture> pictures = new HashMap<>();
@@ -27,9 +26,11 @@ public class DataBase {
         builder.registerTypeAdapter(Player.class, new PlayerAdapter());
         builder.setPrettyPrinting();
         gson = builder.create();
-        for (int i = 1; i <= 8; i++)
-            addProfileIcon("profilepictures/profile" + i + ".jpg");
-        loadPlayers();
+        FileHandle fileHandle = Gdx.files.internal("profilepictures");
+        for (FileHandle handle : fileHandle.list()) {
+            pictures.put(handle.toString(), new Texture(handle));
+        }
+//        loadPlayers();
     }
 
 
@@ -98,6 +99,34 @@ public class DataBase {
     }
 
     public static Game getSavedGame() {
+        return null;
+    }
+
+    public static Texture getNextTexture(String profileIconAddress) {
+        Iterator<String> iterator = pictures.keySet().iterator();
+        while (iterator.hasNext()){
+            String next = iterator.next();
+            if (next.equals(profileIconAddress)){
+                if (iterator.hasNext())
+                    return pictures.get(iterator.next());
+                else
+                    return pictures.get(pictures.keySet().iterator().next());
+            }
+        }
+        return null;
+    }
+
+    public static void sortPlayers() {
+        players.sort((o1, o2) -> {
+            if (o2.getMaxScore() - o1.getMaxScore() == 0 )
+                return o2.getMaxScoreTime() - o1.getMaxScoreTime();
+            return o2.getMaxScore() - o1.getMaxScore();
+        });
+    }
+
+    public static Player getPlayer(int index){
+        if (index< players.size())
+            return players.get(index);
         return null;
     }
 }

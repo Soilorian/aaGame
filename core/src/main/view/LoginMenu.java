@@ -26,6 +26,7 @@ public class LoginMenu extends Menu {
     private final TextField username;
     private final TextField password;
 
+
     public LoginMenu(final Controller controller) {
         super(controller);
         mainTable = new Table(controller.getSkin());

@@ -19,32 +19,35 @@ import main.util.enums.GameText;
 import main.util.enums.Messages;
 
 public class MainMenu extends Menu {
-    private final TextButton loadSavedGame, play, deleteAccount, logout;
+    private final TextButton duo,loadSavedGame, play, deleteAccount, logout;
     private final ImageButton profile, setting;
     private final Table table, mainTable;
-    private final Camera camera;
     Label errorLabel;
 
     public MainMenu(Controller controller) {
         //start
         super(controller);
-        camera = new OrthographicCamera();
         mainTable = new Table(controller.getSkin());
         mainTable.setFillParent(true);
         table = new Table(controller.getSkin());
         mainTable.setBounds(0, 0, 280, 1200);
+
+
         //body
         errorLabel = new Label("", controller.getSkin());
         errorLabel.setColor(Color.RED);
         errorLabel.setWrap(true);
+
         loadSavedGame = new TextButton(GameText.LOAD.toString(), controller.getSkin(), "small");
         play = new TextButton(GameText.PLAY.toString(), controller.getSkin(), "small");
         deleteAccount = new TextButton(GameText.DELETE.toString(), controller.getSkin(), "small");
         logout = new TextButton(GameText.LOGOUT.toString(), controller.getSkin(), "small");
+        duo = new TextButton(GameText.DUO.toString(), controller.getSkin(), "small");
+        setting = new ImageButton(new TextureRegionDrawable(controller.getSettingIcon()));
+
         profile = new ImageButton(new TextureRegionDrawable(Controller.currentPlayer.getProfileIcon()));
         profile.setWidth(100);
         profile.setHeight(100);
-        setting = new ImageButton(new TextureRegionDrawable(controller.getSettingIcon()));
 
         loadSavedGame.addListener(new HoverListener());
         loadSavedGame.addListener(new ChangeListener() {
@@ -75,6 +78,14 @@ public class MainMenu extends Menu {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 logoff();
+            }
+        });
+
+        duo.addListener(new HoverListener());
+        duo.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+
             }
         });
 

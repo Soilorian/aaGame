@@ -30,7 +30,9 @@ public enum GameText {
     P2LEFT("second player left", ""),
     P1RIGHT("first player right", ""),
     P2RIGHT("second player right", ""),
-    FREEZE_BUTTON("freeze", "");
+    FREEZE_BUTTON("freeze", ""),
+    DUO("duo", ""),
+    UPLOAD("upload", "");
 
     private final String english;
     private final String persian;

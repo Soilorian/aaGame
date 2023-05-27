@@ -7,9 +7,11 @@ public enum Messages {
 
     NO_PLAYER("no user with this username"),
     EMPTY_FIELD("there is an empty field"),
-    NOT_VALID("username or password format is not valid"),
+    NOT_VALID("not valid input"),
     LOGIN_FIRST("please register or login first"),
-    NO_SAVED_GAME("no saved game for this account");
+    NO_SAVED_GAME("no saved game for this account"),
+    NOT_FOUND("no files with this name"),
+    FAIL("task failed successfully");
     private final String message;
 
     Messages(String message) {

@@ -1,7 +1,7 @@
 package main.control;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -34,6 +34,7 @@ public class Controller extends Game {
     private final String skinA = "buttons/glassy/skin/glassy-ui.json";
     private final String grayscaleSkinA = "buttons/glassy-grayscale/skin/glassy-ui.json";
     private final String settingIconA = "pictures/setting.jpg";
+    private final String changeIconA = "pictures/change.jpg";
 
     public void create() {
         batch = new SpriteBatch();
@@ -43,13 +44,15 @@ public class Controller extends Game {
         manageAssets();
 //        music = manager.get(musicA2);
 //        music.play();
-        this.setScreen(new LoginMenu(this));
+//        this.setScreen(new LoginMenu(this));
+        DataBase.addPlayer(new Player("_GUEST_", "_GUEST_", "profilepictures/profile1.jpg"));
     }
 
     private void manageAssets() {
         manager.load(backgroundA, Texture.class);
         manager.load(cannonA, Texture.class);
         manager.load(settingIconA, Texture.class);
+        manager.load(changeIconA, Texture.class);
         manager.load(blastA, Sound.class);
         manager.load(musicA, Music.class);
         manager.load(musicA2, Music.class);
@@ -116,5 +119,13 @@ public class Controller extends Game {
         if (screen instanceof GameMenu)
             return manager.get(musicA);
         return manager.get(musicA2);
+    }
+
+    protected static boolean isNotValid(String s) {
+        return !s.matches("^\\w{8,}$");
+    }
+
+    public Texture getChangeIcon() {
+        return manager.get(changeIconA);
     }
 }

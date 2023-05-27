@@ -7,11 +7,18 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Player {
+
     private Texture profileIcon;
+
     private String profileIconAddress;
     private String username;
     private String password;
-    private int maxScore;
+    private int maxScoreTime = 0;
+    private int maxScore = 0;
+    public void setProfileIcon(Texture profileIcon) {
+        this.profileIcon = profileIcon;
+        this.profileIconAddress = DataBase.getAddressFromTexture(profileIcon);
+    }
 
     public Player( String username, String password, Texture profileIcon) {
         this.profileIcon = profileIcon;
@@ -21,6 +28,7 @@ public class Player {
     }
 
     public Player( String username, String password,String profileIconAddress) {
+        profileIcon = DataBase.getTextureFromAddress(profileIconAddress);
         this.profileIconAddress = profileIconAddress;
         this.username = username;
         this.password = password;
@@ -52,5 +60,9 @@ public class Player {
 
     public void updateMaxScore(int maxScore) {
         this.maxScore = Math.max(maxScore, this.maxScore);
+    }
+
+    public int getMaxScoreTime() {
+        return maxScoreTime;
     }
 }
