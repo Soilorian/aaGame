@@ -3,6 +3,7 @@ package main.model;
 import com.badlogic.gdx.graphics.Texture;
 import lombok.Getter;
 import lombok.Setter;
+import main.util.enums.Difficulty;
 
 @Getter
 @Setter
@@ -15,6 +16,8 @@ public class Player {
     private String password;
     private int maxScoreTime = 0;
     private int maxScore = 0;
+    private Difficulty difficulty = Difficulty.MEDIUM;
+
     public void setProfileIcon(Texture profileIcon) {
         this.profileIcon = profileIcon;
         this.profileIconAddress = DataBase.getAddressFromTexture(profileIcon);
@@ -64,5 +67,9 @@ public class Player {
 
     public int getMaxScoreTime() {
         return maxScoreTime;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
     }
 }

@@ -30,7 +30,7 @@ public class DataBase {
         for (FileHandle handle : fileHandle.list()) {
             pictures.put(handle.toString(), new Texture(handle));
         }
-//        loadPlayers();
+        loadPlayers();
     }
 
 
@@ -117,16 +117,27 @@ public class DataBase {
     }
 
     public static void sortPlayers() {
-        players.sort((o1, o2) -> {
-            if (o2.getMaxScore() - o1.getMaxScore() == 0 )
-                return o2.getMaxScoreTime() - o1.getMaxScoreTime();
-            return o2.getMaxScore() - o1.getMaxScore();
+        players.sort(new Comparator<Player>(){
+            @Override
+            public int compare(Player o1, Player o2) {
+                if (!o1.getDifficulty().equals(o2.getDifficulty()))
+                    return (int) (o2.getDifficulty().getSpeed() - o1.getDifficulty().getSpeed());
+                if (o2.getMaxScore() - o1.getMaxScore() == 0 )
+                    return o2.getMaxScoreTime() - o1.getMaxScoreTime();
+                return o2.getMaxScore() - o1.getMaxScore();
+            }
         });
     }
 
     public static Player getPlayer(int index){
-        if (index< players.size())
-            return players.get(index);
+        Player guest = DataBase.getPlayerById("_GUEST_");
+        players.remove(guest);
+        if (index< players.size()){
+            Player player = players.get(index);
+            players.add(guest);
+            return player;
+        }
+        players.add(guest);
         return null;
     }
 }

@@ -16,23 +16,21 @@ import java.util.Random;
 
 public class Game {
     private final Difficulty difficulty;
-    ShapeRenderer shapeRenderer;
     private int freezeBar = 0;
     private boolean stage1, stage2, stage3;
     private Vector2 cannonVector2;
     private Texture cannonImage;
-    private Sprite sprite;
     private GameMap gameMap;
-    private ArrayList<TargetObject> targetObjects;
+    private ArrayList<TargetObject> targetObjects = new ArrayList<>();
 
-    private ArrayList<Circle> ammo;
-    private ArrayList<Circle> ammo2;
-    private Random random;
+    private ArrayList<Circle> ammo = new ArrayList<>();
+    private ArrayList<Circle> ammo2 = new ArrayList<>();
+    private Random random = new Random();
 
     public Game(GameMap gameMap, int initialBall, Difficulty difficulty) {
+        this.gameMap = gameMap;
         this.difficulty = difficulty;
         cannonVector2 = new Vector2((float) Gdx.graphics.getWidth() / 2, 0);
-        sprite.setScale(4);
         switch (gameMap) {
             case NORMAL: {
                 targetObjects.add(new TargetObject(new Circle(336, 900, 70)));

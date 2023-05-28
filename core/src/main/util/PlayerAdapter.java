@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 import main.model.DataBase;
 import main.model.Player;
+import main.util.enums.Difficulty;
 
 import java.io.IOException;
 
@@ -23,6 +24,8 @@ public class PlayerAdapter extends TypeAdapter<Player> {
         out.value(value.getMaxScore());
         out.name("time");
         out.value(value.getMaxScoreTime());
+        out.name("difficulty");
+        out.value(value.getDifficulty().name());
         out.endObject();
     }
 
@@ -30,6 +33,7 @@ public class PlayerAdapter extends TypeAdapter<Player> {
     public Player read(JsonReader in) throws IOException {
         String name = null, password = null, address = null;
         int maxScore = 0, maxScoreTime = 0;
+        Difficulty difficulty = Difficulty.MEDIUM;
         in.beginObject();
         String fieldName = null;
         while (in.hasNext()){
@@ -53,15 +57,20 @@ public class PlayerAdapter extends TypeAdapter<Player> {
                 token = in.peek();
                 maxScore = in.nextInt();
             }
-            if (fieldName.equals("maxScoreTime")){
+            if (fieldName.equals("time")){
                 token = in.peek();
                 maxScoreTime = in.nextInt();
+            }
+            if (fieldName.equals("difficulty")){
+                token = in.peek();
+                difficulty = Difficulty.valueOf(in.nextString());
             }
         }
         in.endObject();
         Player player = new Player(name, password, DataBase.getTextureFromAddress(address));
         player.setMaxScore(maxScore);
         player.setMaxScoreTime(maxScoreTime);
+        player.setDifficulty(difficulty);
         return player;
     }
 }

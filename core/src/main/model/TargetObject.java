@@ -10,23 +10,26 @@ import java.util.Random;
 
 public class TargetObject {
     private boolean visible = true;
-    private final Circle circle;
+    private final Circle outerCircle,circle;
     private final ArrayList<Circle> circles = new ArrayList<>();
     private final ShapeRenderer shapeRenderer = new ShapeRenderer();
     private final Random random = new Random();
 
     public TargetObject(Circle circle) {
         this.circle = circle;
+        outerCircle = new Circle(circle.x, circle.y,  circle.radius * 1.5f);
         randomBalls();
     }
 
     private void randomBalls() {
         do {
             float x = random.nextFloat();
-            x %= 400;
-            x += 436;
-            float y = (float) (circle.y + Math.sqrt(Math.pow(circle.radius, 2) - Math.pow(x - circle.x, 2)));
+            x *= 1000;
+            x %= outerCircle.radius * 2;
+            x += outerCircle.x - outerCircle.radius;
+            float y = (float) (outerCircle.y + Math.sqrt(Math.pow(outerCircle.radius, 2) - Math.pow(x - outerCircle.x, 2)));
             Circle circle1 = new Circle(x, y, 7);
+            circles.add(circle1);
         } while (circles.size() < 5);
     }
 

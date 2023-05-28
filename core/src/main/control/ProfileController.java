@@ -2,13 +2,21 @@ package main.control;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import lombok.Getter;
+import lombok.Setter;
 import main.model.DataBase;
+import main.util.enums.Difficulty;
 import main.util.enums.Messages;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class ProfileController extends Controller {
+
+    @Getter
+    @Setter
+    private static Difficulty difficulty;
 
     public static Messages update(String username, String password) {
         if (isNotValid(username) || isNotValid(password) && !username.isEmpty() && !password.isEmpty())

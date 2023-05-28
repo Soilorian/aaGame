@@ -1,10 +1,13 @@
 package main.view;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -24,7 +27,7 @@ public class MainMenu extends Menu {
     private final Table table, mainTable;
     Label errorLabel;
 
-    public MainMenu(Controller controller) {
+    public MainMenu(final Controller controller) {
         //start
         super(controller);
         mainTable = new Table(controller.getSkin());
@@ -85,7 +88,7 @@ public class MainMenu extends Menu {
         duo.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-
+                controller.setScreen(new GameMenu(controller, true));
             }
         });
 
@@ -107,6 +110,8 @@ public class MainMenu extends Menu {
         //end
         stage.clear();
         table.add(profile).width(300);
+        table.row();
+        table.add(duo).width(300).padTop(50).padBottom(50);
         table.row();
         table.add(loadSavedGame).width(300).padTop(50).padBottom(50);
         table.row();
@@ -150,14 +155,14 @@ public class MainMenu extends Menu {
     }
 
     private void startNewGame() {
-        controller.setScreen(new GameMenu());
+        controller.setScreen(new GameMenu(controller, false));
     }
 
     private void loadGame() {
         Messages messages = MainController.loadGame();
         errorLabel.setText(messages.toString());
         if (messages.equals(Messages.SUCCESSFUL))
-            controller.setScreen(new MainMenu(controller));
+            startNewGame();
     }
 
     @Override

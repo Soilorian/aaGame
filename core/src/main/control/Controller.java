@@ -35,6 +35,7 @@ public class Controller extends Game {
     private final String grayscaleSkinA = "buttons/glassy-grayscale/skin/glassy-ui.json";
     private final String settingIconA = "pictures/setting.jpg";
     private final String changeIconA = "pictures/change.jpg";
+    private final String  scoreboardA = "pictures/leaderboard.jpg";
 
     public void create() {
         batch = new SpriteBatch();
@@ -42,10 +43,9 @@ public class Controller extends Game {
         settings = new Settings();
         manager = new AssetManager();
         manageAssets();
-//        music = manager.get(musicA2);
-//        music.play();
-//        this.setScreen(new LoginMenu(this));
-        DataBase.addPlayer(new Player("_GUEST_", "_GUEST_", "profilepictures/profile1.jpg"));
+        music = manager.get(musicA2);
+        music.play();
+        this.setScreen(new LoginMenu(this));
     }
 
     private void manageAssets() {
@@ -53,6 +53,7 @@ public class Controller extends Game {
         manager.load(cannonA, Texture.class);
         manager.load(settingIconA, Texture.class);
         manager.load(changeIconA, Texture.class);
+        manager.load(scoreboardA, Texture.class);
         manager.load(blastA, Sound.class);
         manager.load(musicA, Music.class);
         manager.load(musicA2, Music.class);
@@ -127,5 +128,9 @@ public class Controller extends Game {
 
     public Texture getChangeIcon() {
         return manager.get(changeIconA);
+    }
+
+    public Texture getScoreboard() {
+        return manager.get(scoreboardA);
     }
 }

@@ -7,11 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import main.control.Controller;
 import main.control.ProfileController;
 import main.model.DataBase;
 import main.model.Player;
 import main.util.HoverListener;
+import main.util.enums.Difficulty;
 import main.util.enums.GameMap;
 import main.util.enums.GameText;
 import main.util.enums.Messages;
@@ -22,61 +24,73 @@ public class ProfileMenu extends Menu {
     private final TextButton upload, back;
     private final ImageButton changeButton, profile;
     private final Table table, mainTable, scoreboard;
-    private final SelectBox<GameMap> mapSelectBox;
+    private final SelectBox<Difficulty> difficultySelectBox;
     private final TextField username, password;
     private final TextArea fileAddress;
     private final ArrayList<Label> names = new ArrayList<>();
     private final ArrayList<Label> maxScores = new ArrayList<>();
     private final ArrayList<Label> times = new ArrayList<>();
+    private final Label difficultyLabel;
     Label successLabel, errorLabel, usernameLabel, passwordLabel, mapLabel;
     private ArrayList<Label> ranks = new ArrayList<>();
 
-    protected ProfileMenu(Controller controller) {
+    protected ProfileMenu(final Controller controller) {
         //start
         super(controller);
         scoreboard = new Table(controller.getSkin());
+        scoreboard.left().bottom();
         table = new Table(controller.getSkin());
         mainTable = new Table(controller.getSkin());
-        table.setBounds(0, 0, 280, 1200);
         mainTable.setFillParent(true);
-        mainTable.setBounds(0, 0, 280, 1200);
+        mainTable.add(table).align(Align.left).expandY();
+        mainTable.add(scoreboard).align(Align.bottomLeft);
 
         //body
+        difficultyLabel = new Label(GameText.DIFFICULTY.toString(), controller.getSkin());
+        difficultySelectBox = new SelectBox<>(controller.getSkin());
+        difficultySelectBox.setItems(Difficulty.values());
+        difficultySelectBox.setSelected(ProfileController.getDifficulty());
+        difficultySelectBox.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                ProfileController.setDifficulty(difficultySelectBox.getSelected());
+                controller.setScreen(new ProfileMenu(controller));
+            }
+        });
+
+
         DataBase.sortPlayers();
         for (int i = 0; i < 10; i++) {
-            ranks.add(new Label(String.valueOf(i + 1), controller.getSkin()));
+            Label e = new Label(String.valueOf(i + 1), controller.getSkin());
+            e.setFontScale(4);
+            e.setColor(Color.BLACK);
+            ranks.add(e);
             Player player = DataBase.getPlayer(i);
-            if (player == null) {
+            if (player == null || !player.getDifficulty().equals(difficultySelectBox.getSelected())) {
                 names.add(new Label("", controller.getSkin()));
                 maxScores.add(new Label("", controller.getSkin()));
                 times.add(new Label("", controller.getSkin()));
             } else {
-                names.add(new Label(player.getUsername(), controller.getSkin()));
-                maxScores.add(new Label(String.valueOf(player.getMaxScore()), controller.getSkin()));
-                times.add(new Label(String.valueOf(player.getMaxScoreTime()), controller.getSkin()));
+                Label e1 = new Label(player.getUsername(), controller.getSkin());
+                e1.setColor(Color.BLACK);
+                names.add(e1);
+                Label e2 = new Label(String.valueOf(player.getMaxScore()), controller.getSkin());
+                e2.setColor(Color.BLACK);
+                maxScores.add(e2);
+                Label e3 = new Label(String.valueOf(player.getMaxScoreTime()), controller.getSkin());
+                e3.setColor(Color.BLACK);
+                times.add(e3);
             }
         }
 
         for (int i = 0; i < 10; i++) {
-            if (i == 0)
-                if (controller.settings.isGrayScale())
-                    scoreboard.add(ranks.get(i), names.get(i), maxScores.get(i), times.get(i)).setColor(new Color(105
-                            , 105, 105, 1));
-                else
-                    scoreboard.add(ranks.get(i), names.get(i), maxScores.get(i), times.get(i)).setColor(Color.GOLD);
-            else if (i == 1)
-                scoreboard.add(ranks.get(i), names.get(i), maxScores.get(i), times.get(i)).setColor(Color.GRAY);
-            else if (i == 2)
-                if (controller.settings.isGrayScale())
-                    scoreboard.add(ranks.get(i), names.get(i), maxScores.get(i), times.get(i)).setColor(new Color(207
-                            , 207, 197, 1));
-                else
-                    scoreboard.add(ranks.get(i), names.get(i), maxScores.get(i), times.get(i)).setColor(Color.BROWN);
-            else
-                scoreboard.add(ranks.get(i), names.get(i), maxScores.get(i), times.get(i));
+            scoreboard.add(ranks.get(i)).width(60).height(109);
+            scoreboard.add(names.get(i)).width(225);
+            scoreboard.add(maxScores.get(i)).width(180);
+            scoreboard.add(times.get(i)).width(180);
             scoreboard.row();
         }
-
+        scoreboard.setBackground(new TextureRegionDrawable(controller.getScoreboard()));
 
         fileAddress = new TextArea("", controller.getSkin());
         upload = new TextButton(GameText.UPLOAD.toString(), controller.getSkin(), "small");
@@ -97,6 +111,7 @@ public class ProfileMenu extends Menu {
             }
         });
 
+
         username = new TextField(Controller.currentPlayer.getUsername(), controller.getSkin());
         usernameLabel = new Label("username:", controller.getSkin());
         usernameLabel.setColor(Color.BLACK);
@@ -104,11 +119,6 @@ public class ProfileMenu extends Menu {
         passwordLabel = new Label("password:", controller.getSkin());
         passwordLabel.setColor(Color.BLACK);
         password = new TextField(Controller.currentPlayer.getPassword(), controller.getSkin());
-
-        mapSelectBox = new SelectBox<>(controller.getSkin());
-        mapSelectBox.setItems(GameMap.values());
-        mapSelectBox.setSelected(GameMap.NORMAL);
-        mapLabel = new Label(GameText.MAP.toString(), controller.getSkin());
 
         back = new TextButton(GameText.BACK.toString(), controller.getSkin(), "small");
         back.addListener(new HoverListener());
@@ -143,7 +153,6 @@ public class ProfileMenu extends Menu {
             }
         });
 
-        scoreboard.add();
 
         //end
         stage.clear();
@@ -162,12 +171,13 @@ public class ProfileMenu extends Menu {
         table.add(changeButton).colspan(2).pad(10);
         table.row();
         table.add(back).colspan(2).pad(10);
+        table.row();
         table.add(errorLabel).colspan(2).pad(10).width(300);
+        table.row();
         table.add(successLabel).colspan(2).pad(10).width(300);
+        table.row();
+        table.add(difficultyLabel, difficultySelectBox);
         mainTable.setBackground(new TextureRegionDrawable(controller.getBackground()));
-        table.add(scoreboard);
-        mainTable.add(table);
-        mainTable.left();
         stage.addActor(mainTable);
     }
 
