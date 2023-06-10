@@ -1,10 +1,10 @@
 package main.control;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,20 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import main.model.DataBase;
 import main.model.Player;
 import main.model.Settings;
-import main.view.*;
+import main.util.GameMusic;
+import main.view.GameMenu;
+import main.view.LoginMenu;
 
 public class Controller extends Game {
     public static boolean isPersian = false;
-    public SpriteBatch batch;
-    public BitmapFont font;
-    public Texture backgroundImage;
-    public Sound fireSound;
-    public Music music;
     public static Player currentPlayer;
     public static main.model.Game currentGame;
-    public main.model.Game lastSaved;
-    public Settings settings;
-    public AssetManager manager;
     private final String backgroundA = "pictures/aaBackground.jpg";
     private final String cannonA = "pictures/cannon.jpg";
     private final String blastA = "sounds/cannonBlast.mp3";
@@ -35,7 +29,24 @@ public class Controller extends Game {
     private final String grayscaleSkinA = "buttons/glassy-grayscale/skin/glassy-ui.json";
     private final String settingIconA = "pictures/setting.jpg";
     private final String changeIconA = "pictures/change.jpg";
-    private final String  scoreboardA = "pictures/leaderboard.jpg";
+    private final String scoreboardA = "pictures/leaderboard.jpg";
+    public SpriteBatch batch;
+    public BitmapFont font;
+    public Texture backgroundImage;
+    public Sound fireSound;
+    public Music music;
+    public main.model.Game lastSaved;
+    public Settings settings;
+    public AssetManager manager;
+    private String winningBGA = "pictures/win.jpeg";
+
+    public static void setCurrentPlayer(Player player) {
+        currentPlayer = player;
+    }
+
+    protected static boolean isNotValid(String s) {
+        return !s.matches("^\\w{8,}$");
+    }
 
     public void create() {
         batch = new SpriteBatch();
@@ -43,9 +54,25 @@ public class Controller extends Game {
         settings = new Settings();
         manager = new AssetManager();
         manageAssets();
-        music = manager.get(musicA2);
+        music = GameMusic.randomSong();
+        music.setLooping(true);
         music.play();
         this.setScreen(new LoginMenu(this));
+    }
+
+    public Texture resizer(float width, float height, Texture texture) {
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
+        Pixmap pixmap200 = texture.getTextureData().consumePixmap();
+        Pixmap pixmap100 = new Pixmap((int) width, (int) height, pixmap200.getFormat());
+        pixmap100.drawPixmap(pixmap200,
+                0, 0, pixmap200.getWidth(), pixmap200.getHeight(),
+                0, 0, pixmap100.getWidth(), pixmap100.getHeight()
+        );
+        Texture result = new Texture(pixmap100);
+        pixmap200.dispose();
+        pixmap100.dispose();
+        return result;
     }
 
     private void manageAssets() {
@@ -55,8 +82,6 @@ public class Controller extends Game {
         manager.load(changeIconA, Texture.class);
         manager.load(scoreboardA, Texture.class);
         manager.load(blastA, Sound.class);
-        manager.load(musicA, Music.class);
-        manager.load(musicA2, Music.class);
         manager.load(skinA, Skin.class);
         manager.load(grayscaleSkinA, Skin.class);
         DataBase.load();
@@ -104,10 +129,6 @@ public class Controller extends Game {
         return manager.get(skinA);
     }
 
-    public static void setCurrentPlayer(Player player){
-        currentPlayer = player;
-    }
-
     public Texture getBackground() {
         return manager.get(backgroundA);
     }
@@ -116,14 +137,10 @@ public class Controller extends Game {
         return manager.get(settingIconA);
     }
 
-    public Music getMusicTheme(){
+    public Music getMusicTheme() {
         if (screen instanceof GameMenu)
             return manager.get(musicA);
         return manager.get(musicA2);
-    }
-
-    protected static boolean isNotValid(String s) {
-        return !s.matches("^\\w{8,}$");
     }
 
     public Texture getChangeIcon() {
@@ -132,5 +149,64 @@ public class Controller extends Game {
 
     public Texture getScoreboard() {
         return manager.get(scoreboardA);
+    }
+
+    public Texture getCannon() {
+        return manager.get(cannonA);
+    }
+
+    public Music getMusic() {
+        return music;
+    }
+
+
+
+    public GameMusic getSelectedMusic() {
+        for (GameMusic value : GameMusic.values()) {
+            if (value.getMusic().equals(music))
+                return value;
+        }
+        return null;
+    }
+
+    public void setSelectedMusic(GameMusic selected, boolean b) {
+        music.pause();
+        music = selected.getMusic();
+        music.setLooping(b);
+        if (!settings.isMute())
+            music.play();
+    }
+
+    public void pauseMusic() {
+        if (music.isPlaying())
+            music.pause();
+        else if (!settings.isMute())
+            music.play();
+    }
+
+    public Sound getFireSound() {
+        return manager.get(blastA);
+    }
+
+    public Texture getLoosingBG() {
+        return resizer(600, 600, new Texture("pictures/loose.jpeg"));
+    }
+
+    public Texture grayScaler(Texture texture) {
+
+        if (!texture.getTextureData().isPrepared())
+            texture.getTextureData().prepare();
+        Pixmap pixmap = texture.getTextureData().consumePixmap();
+        for (int i = 0; i < pixmap.getHeight(); i++) {
+            for (int j = 0; j < pixmap.getWidth(); j++) {
+                pixmap.setColor(pixmap.getPixel(j, i));
+
+            }
+        }
+        return texture;
+    }
+
+    public Texture getWinningBG() {
+        return resizer(600, 600, new Texture("pictures/win.jpeg"));
     }
 }

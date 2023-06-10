@@ -29,4 +29,10 @@ public enum Difficulty {
     public void reverse() {
         speed *= -1;
     }
+    public static void reset(){
+        for (Difficulty value : values()) {
+            if (value.getSpeed() < 0)
+                value.reverse();
+        }
+    }
 }

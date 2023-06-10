@@ -11,7 +11,7 @@ import static com.badlogic.gdx.Gdx.input;
 
 public abstract class Menu implements Screen {
     protected final Controller controller;
-    protected final Stage stage;
+    protected Stage stage;
 
     protected Menu(Controller controller) {
         this.controller = controller;

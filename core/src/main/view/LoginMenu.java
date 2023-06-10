@@ -1,6 +1,7 @@
 package main.view;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -25,6 +26,7 @@ public class LoginMenu extends Menu {
     private final Table table, mainTable;
     private final TextField username;
     private final TextField password;
+    PerspectiveCamera camera = new PerspectiveCamera();
 
 
     public LoginMenu(final Controller controller) {

@@ -3,6 +3,7 @@ package main.view;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -117,9 +118,24 @@ public class SettingMenu extends Menu {
 
         mute = new CheckBox(GameText.MUTE.toString(), controller.getSkin());
         mute.setChecked(controller.settings.isMute());
+        mute.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (mute.isChecked())
+                    controller.getMusic().pause();
+                else
+                    controller.getMusic().play();
+            }
+        });
 
         grayScale = new CheckBox(GameText.GRAYSCALE.toString(), controller.getSkin());
         grayScale.setChecked(controller.settings.isGrayScale());
+        grayScale.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                controller.settings.setGrayScale(grayScale.isChecked());
+            }
+        });
 
 
 

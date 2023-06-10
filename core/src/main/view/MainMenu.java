@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -131,17 +133,21 @@ public class MainMenu extends Menu {
     }
 
     private void settingMenu() {
+        dispose();
         controller.setScreen(new SettingMenu(controller));
     }
 
     private void profileMenu() {
         if (Controller.currentPlayer.getUsername().equals("_GUEST_"))
             errorLabel.setText(Messages.LOGIN_FIRST.toString());
-        else
+        else{
+            dispose();
             controller.setScreen(new ProfileMenu(controller));
+        }
     }
 
     private void logoff() {
+        dispose();
         controller.setScreen(new LoginMenu(controller));
     }
 
@@ -155,6 +161,7 @@ public class MainMenu extends Menu {
     }
 
     private void startNewGame() {
+        dispose();
         controller.setScreen(new GameMenu(controller, false));
     }
 

@@ -2,7 +2,39 @@
   {
     "name": "asdfasdf",
     "password": "asdfasdf",
-    "profile": "profilepictures/profile8.jpg",
+    "profile": "profilepictures/profile2.jpg",
+    "maxScore": 0,
+    "time": 0,
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "mortezaa",
+    "password": "mortezaa",
+    "profile": "profilepictures/profile1.jpg",
+    "maxScore": 0,
+    "time": 0,
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "moeeinnn",
+    "password": "moeeinnnn",
+    "profile": "profilepictures/profile7.jpg",
+    "maxScore": 0,
+    "time": 0,
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "hoorajoonziba",
+    "password": "hoorajoonziba",
+    "profile": "profilepictures/profile3.jpg",
+    "maxScore": 0,
+    "time": 0,
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "mahbod89",
+    "password": "13890717",
+    "profile": "profilepictures/profile4.jpg",
     "maxScore": 0,
     "time": 0,
     "difficulty": "MEDIUM"
