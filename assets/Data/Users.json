@@ -1,16 +1,16 @@
 [
   {
-    "name": "asdfasdf",
-    "password": "asdfasdf",
-    "profile": "profilepictures/profile2.jpg",
-    "maxScore": 0,
+    "name": "mortezaa",
+    "password": "mortezaa",
+    "profile": "profilepictures/profile1.jpg",
+    "maxScore": 10,
     "time": 0,
     "difficulty": "MEDIUM"
   },
   {
-    "name": "mortezaa",
-    "password": "mortezaa",
-    "profile": "profilepictures/profile1.jpg",
+    "name": "asdfasdf",
+    "password": "asdfasdf",
+    "profile": "profilepictures/profile7.jpg",
     "maxScore": 0,
     "time": 0,
     "difficulty": "MEDIUM"
@@ -34,6 +34,14 @@
   {
     "name": "mahbod89",
     "password": "13890717",
+    "profile": "profilepictures/profile4.jpg",
+    "maxScore": 0,
+    "time": 0,
+    "difficulty": "MEDIUM"
+  },
+  {
+    "name": "asdfghjk",
+    "password": "asdfghjk",
     "profile": "profilepictures/profile4.jpg",
     "maxScore": 0,
     "time": 0,

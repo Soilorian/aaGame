@@ -450,6 +450,8 @@ public class GameMenu extends Menu {
     public void spawnBall(int playerId, Vector2 position) {
         soundEffect.play();
         floatingBalls.add(new Ball(game, new Circle(position.x, position.y, 15), playerId));
+        if (game.getCannon1().getAmmo() == 0)
+            gameWon = true;
         if (freezeSlider.getValue() != 1)
             freezeSlider.setValue(freezeSlider.getValue() + 0.1f);
     }

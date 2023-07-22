@@ -185,6 +185,11 @@ public class ProfileMenu extends Menu {
         controller.setScreen(new MainMenu(controller));
     }
 
+    private void nextProfile() {
+        Controller.currentPlayer.setProfileIcon(DataBase.getNextTexture(Controller.currentPlayer.getProfileIconAddress()));
+        controller.setScreen(new ProfileMenu(controller));
+    }
+
     private void uploadFile() {
         Messages upload1 = ProfileController.upload(fileAddress.getText());
         if (upload1.equals(Messages.SUCCESSFUL)) {
@@ -194,11 +199,6 @@ public class ProfileMenu extends Menu {
             errorLabel.setText(upload1.toString());
             successLabel.setText("");
         }
-    }
-
-    private void nextProfile() {
-        Controller.currentPlayer.setProfileIcon(DataBase.getNextTexture(Controller.currentPlayer.getProfileIconAddress()));
-        controller.setScreen(new ProfileMenu(controller));
     }
 
     private void changePlayerInfo() {
