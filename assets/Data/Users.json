@@ -48,6 +48,14 @@
     "difficulty": "MEDIUM"
   },
   {
+    "name": "mahdi1234",
+    "password": "mahdi1234",
+    "profile": "profilepictures/profile7.jpg",
+    "maxScore": 0,
+    "time": 0,
+    "difficulty": "MEDIUM"
+  },
+  {
     "name": "_GUEST_",
     "password": "_GUEST_",
     "profile": "profilepictures/profile1.jpg",

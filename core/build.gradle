@@ -5,6 +5,7 @@ dependencies {
     implementation 'top.jfunc.json:Json-Gson:1.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'name.remal.gradle-plugins.lombok:lombok:2.0.2'
+    implementation 'org.projectlombok:lombok:1.18.26'
 }
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
